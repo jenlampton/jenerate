@@ -1,0 +1,6 @@
+name = Custom Images
+description = Image styles provided in code.
+package = Custom
+core = 7.x
+
+dependencies[] = image

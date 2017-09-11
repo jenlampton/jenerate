@@ -1,0 +1,185 @@
+<?php
+/**
+ * @file
+ * All image styles in code.
+ */
+
+/**
+ * Implements hook_image_default_styles().
+ *
+ * Provide custom image styles.
+ */
+function jenerate_images_image_default_styles() {
+  $styles = array();
+
+  $styles['homeslide'] = array(
+    'label' => t('Home Slide (1000x450)'),
+    'effects' => array(
+      array(
+        'label' => t('Scale and crop'),
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => '1000',
+          'height' => '450',
+          'upscale' => 0,
+        ),
+        'weight' => 0,
+      ),
+    ),
+  );
+
+  $styles['full'] = array(
+    'label' => t('Full (1000px wide)'),
+    'effects' => array(
+      array(
+        'label' => t('Scale'),
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => '1000',
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 0,
+      ),
+    ),
+  );
+
+  $styles['half'] = array(
+    'label' => t('Half (470x190)'),
+    'effects' => array(
+      array(
+        'label' => t('Scale and crop'),
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => '470',
+          'height' => '190',
+          'upscale' => 0,
+        ),
+        'weight' => 0,
+      ),
+    ),
+  );
+
+  $styles['third'] = array(
+    'label' => t('Third (310x200)'),
+    'effects' => array(
+      array(
+        'label' => t('Scale and crop'),
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => '310',
+          'height' => '200',
+          'upscale' => 0,
+        ),
+        'weight' => 0,
+      ),
+    ),
+  );
+
+//  $styles['quarter'] = array(); // Override medium insdead, below.
+
+  return $styles;
+}
+
+/**
+ * Implements hook_default_image_styles_alter().
+ *
+ * Alter the default image styles for use on the NEW CPR site.
+ */
+function jenerate_images_image_styles_alter(&$styles) {
+  // Check that we only affect a default style.
+  if (isset($styles['thumbnail']['storage']) && $styles['thumbnail']['storage'] == IMAGE_STORAGE_DEFAULT) {
+    // Change the size of the thumbnail image.
+    $styles['thumbnail']['label'] = t('Thumbnail (85x85)');
+    $effect = array(
+      'label' => t('Scale and crop'),
+      'help' => t('Scale and crop will maintain the aspect-ratio of the original image, then crop the larger dimension. This is most useful for creating perfectly square thumbnails without stretching the image.'),
+      'effect callback' => 'image_scale_and_crop_effect',
+      'dimensions callback' => 'image_resize_dimensions',
+      'form callback' => 'image_resize_form',
+      'summary theme' => 'image_resize_summary',
+      'module' => 'image',
+      'name' => 'image_scale_and_crop',
+      'data' => array(
+        'width' => 85,
+        'height' => 85,
+        'upscale' => 0,
+      ),
+      'weight' => 0,
+    );
+    $styles['thumbnail']['effects'] = array($effect);
+  }
+
+  if (isset($styles['medium']['storage']) && $styles['medium']['storage'] == IMAGE_STORAGE_DEFAULT) {
+    // Change the size and name of the medium image style.
+    $styles['medium']['label'] = t('Quarter (230x135)');
+    $effect = array(
+      'label' => t('Scale and crop'),
+      'help' => t('Scale and crop will maintain the aspect-ratio of the original image, then crop the larger dimension. This is most useful for creating perfectly square thumbnails without stretching the image.'),
+      'effect callback' => 'image_scale_and_crop_effect',
+      'dimensions callback' => 'image_resize_dimensions',
+      'form callback' => 'image_resize_form',
+      'summary theme' => 'image_resize_summary',
+      'module' => 'image',
+      'name' => 'image_scale_and_crop',
+      'data' => array(
+        'width' => 230,
+        'height' => 135,
+        'upscale' => 0,
+      ),
+      'weight' => 0,
+    );
+    $styles['medium']['effects'] = array($effect);
+  }
+
+  if (isset($styles['large']['storage']) && $styles['large']['storage'] == IMAGE_STORAGE_DEFAULT) {
+    // Change the size and name of the large image style.
+    $styles['large']['label'] = t('Large (725x325)');
+    $effect = array(
+      'label' => t('Scale and crop'),
+      'help' => t('Scale and crop will maintain the aspect-ratio of the original image, then crop the larger dimension. This is most useful for creating perfectly square thumbnails without stretching the image.'),
+      'effect callback' => 'image_scale_and_crop_effect',
+      'dimensions callback' => 'image_resize_dimensions',
+      'form callback' => 'image_resize_form',
+      'summary theme' => 'image_resize_summary',
+      'module' => 'image',
+      'name' => 'image_scale_and_crop',
+      'data' => array(
+        'width' => 725,
+        'height' => 325,
+        'upscale' => 0,
+      ),
+      'weight' => 0,
+    );
+    $styles['large']['effects'] = array($effect);
+  }
+
+  // Remove those added by flexslider.
+  if (module_exists('flexslider')) {
+    unset($styles['flexslider_full']);
+    unset($styles['flexslider_thumbnail']);
+  }
+
+  // Remove those added by media.
+  if (module_exists('media')) {
+    unset($styles['media_thumbnail']);
+  }
+
+  // Sort the styles by weight.
+  uasort($styles, 'drupal_sort_weight');
+}
