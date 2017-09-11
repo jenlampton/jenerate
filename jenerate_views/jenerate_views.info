@@ -1,4 +1,4 @@
-name = Views Exports
+name = Custom Views
 description = Configuration files for exported views.
 core = 7.x
 package = Custom
