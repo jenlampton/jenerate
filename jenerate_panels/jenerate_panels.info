@@ -1,0 +1,12 @@
+name = Custom Panels
+description = Panels pages and handlers exports.
+core = 7.x
+package = Custom
+
+dependencies[] = panels
+dependencies[] = page_manager
+
+; Add any other modules you may need for your panels below
+;dependencies[] = radix_layouts
+;dependencies[] = custom_layouts
+;dependencies[] = fieldable_panels_panes

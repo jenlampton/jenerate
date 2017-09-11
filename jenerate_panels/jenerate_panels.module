@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ * Panel, Handler, and Mini exports.
+ */
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function jenerate_panels_ctools_plugin_api($module, $api) {
+  if ($module == 'page_manager' && $api == 'pages_default') {
+    return array('version' => 1);
+  }
+  if ($module == 'panels_mini' && $api == 'panels_default') {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implements hook_default_page_manager_handlers().
+ */
+function jenerate_panels_default_page_manager_handlers() {
+  $hanlders_path = drupal_get_path('module', 'jenerate_panels') . '/handlers';
+  $files = file_scan_directory($hanlders_path, '/\.inc$/');
+
+  $handlers = array();
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    if (isset($handler)) {
+      $handlers[$handler->name] = $handler;
+    }
+  }
+
+  return $handlers;
+}
+
+/**
+ * Implements hook_default_page_manager_pages()
+ */
+function jenerate_panels_default_page_manager_pages() {
+  $pages_path = drupal_get_path('module', 'jenerate_panels') . '/pages';
+  $files = file_scan_directory($pages_path, '/\.inc$/');
+
+  $pages = array();
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    if (isset($page)) {
+      $pages[$page->name] = $page;
+    }
+  }
+
+  return $pages;
+}
+
+/**
+ * Implements hook_default_panels_mini().
+ */
+function jenerate_panels_default_panels_mini() {
+  $minis_path = drupal_get_path('module', 'jenerate_panels') . '/minis';
+  $files = file_scan_directory($minis_path, '/\.inc$/');
+
+  $minis = array();
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    if (isset($mini)) {
+      $minis[$mini->name] = $mini;
+    }
+  }
+
+  return $minis;
+}
