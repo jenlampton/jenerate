@@ -5,9 +5,10 @@ Contents
 --------
 
 - jenerate_views: Views exports.
-- jenerate_panels: Panels pages & handlers.
+- jenerate_panels: Panels pages & handlers & minis.
 - jenerate_images: Image styles.
 - jenerate_dates: Date formats.
+- jenerate_modes: Entity view modes.
 
 Installation
 ------------
