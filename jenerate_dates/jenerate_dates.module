@@ -1,0 +1,154 @@
+<?php
+/**
+ * @file
+ * Adds extra date formats.
+ */
+
+/**
+ * Implements hook_date_format_types().
+ *
+ * Defines alternate date format types.
+ */
+function jenerate_dates_date_format_types() {
+  // Define date format types.
+  return array(
+    'long_no_time' => t('Long - no time'),
+    'short_no_year' => t('Short - no year'),
+    'year' => t('Year'),
+    'time' => t('Time'),
+  );
+}
+
+/**
+ * Implements hook_date_format_types_alter().
+ *
+ * Puts date formats into the correct order.
+ */
+function jenerate_dates_date_format_types_alter(&$types) {
+  $old_types = $types;
+  $new_types = array(
+    'long' => $old_types['long'],
+    'long_no_time' => $old_types['long_no_time'],
+    'medium' => $old_types['medium'],
+    'short' => $old_types['short'],
+    'short_no_year' => $old_types['short_no_year'],
+  );
+  unset($old_types['long']);
+  unset($old_types['long_no_time']);
+  unset($old_types['medium']);
+  unset($old_types['short']);
+  unset($old_types['short_no_year']);
+
+  // Include all the others, if there are any.
+  foreach ($old_types as $name => $type) {
+    $new_types[$name] = $type;
+  }
+  $types = $new_types;
+
+  // Change labels to indicate required date parts.
+  $types['medium']['title'] .= t(' (must contain Year)');
+  $types['short']['title'] .= t(' (must contain Year)');
+}
+
+/**
+ * Implements hook_date_formats().
+ *
+ * Creates alternate date formats.
+ */
+function jenerate_dates_date_formats() {
+  return array(
+    // Long date options that make sense.
+    array(
+      'type' => 'long',
+      'format' => 'F j, Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
+      'type' => 'long',
+      'format' => 'F j, Y - g:ia',
+      'locales' => array(),
+    ),
+    array(
+      'type' => 'long',
+      'format' => 'D, F j, Y - g:ia',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
+      'type' => 'long',
+      'format' => 'D, F j, Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    // long_no_time
+    array(
+     'type' => 'long_no_time',
+     'format' => 'D, j F Y',
+     'locales' => array('en', 'en-us'),
+    ),
+    // Medium option with no time.
+    array(
+      'type' => 'medium',
+      'format' => 'M j, Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
+      'type' => 'medium',
+      'format' => 'M j, Y - g:ia',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
+      'type' => 'medium',
+      'format' => 'F j, Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    // Short dates that make sense (all must have year).
+    array(
+      'type' => 'short',
+      'format' => 'm-d-Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    array(
+      'type' => 'short',
+      'format' => 'm-d-Y - g:ia',
+      'locales' => array('en', 'en-us'),
+    ),
+   array(
+      'type' => 'short',
+      'format' => 'M j, Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    // short_no_year
+    array(
+      'type' => 'short_no_year',
+      'format' => 'M j',
+      'locales' => array('en', 'en-us'),
+    ),
+    // Year.
+    array(
+      'type' => 'year',
+      'format' => 'Y',
+      'locales' => array('en', 'en-us'),
+    ),
+    // Time
+    array(
+      'type' => 'time',
+      'format' => 'g:ia',
+      'locales' => array('en', 'en-us'),
+    ),
+  );
+}
+
+ /**
+  * Implements hook_date_formats().
+  *
+  * Removes unnecessary date formats.
+  */
+ function jenerate_dates_date_formats_alter(&$formats) {
+   foreach ($formats as $id => $format) {
+     foreach ($format as $key => $data) {
+       if (strstr($data['format'], 'H:i') || strstr($data['format'], 'j.')) {
+         unset($formats[$id][$key]);
+       }
+     }
+   }
+ }
+

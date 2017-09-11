@@ -1,0 +1,6 @@
+name = Custom Date Formats
+description = Adds extra date formats.
+core = 7.x
+package = Custom
+
+configure = admin/config/regional/date-time
