@@ -4,5 +4,7 @@ core = 7.x
 package = Custom
 
 dependencies[] = views
-; Add any special modules needed for the views you are using here.
+
+; Add any other modules you may need for your views below
 ;dependencies[] = views_arg_cache
+;dependencies[] = flexslider
