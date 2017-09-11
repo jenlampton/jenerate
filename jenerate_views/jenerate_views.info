@@ -1,0 +1,8 @@
+name = Views Exports
+description = Configuration files for exported views.
+core = 7.x
+package = Custom
+
+dependencies[] = views
+; Add any special modules needed for the views you are using here.
+;dependencies[] = views_arg_cache

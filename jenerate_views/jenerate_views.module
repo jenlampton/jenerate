@@ -1,0 +1,88 @@
+<?php
+/**
+ * @file
+ * Configuration files for exported views.
+ */
+
+/**
+ * Implements hook_views_api().
+ *
+ * Register View API information. This is required for your module to have
+ * its include files loaded; for example, when implementing
+ * hook_views_default_views().
+ *
+ * @return
+ *   An array with the following possible keys:
+ *   - api:  (required) The version of the Views API the module implements.
+ *   - path: (optional) If includes are stored somewhere other than within
+ *       the root module directory or a subdirectory called includes, specify
+ *       its path here.
+ */
+function jenerate_views_views_api() {
+  return array(
+    'api' => 2,
+  );
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function jenerate_views_ctools_plugin_api($owner, $api) {
+  if ($owner == 'flexslider' && $api == 'flexslider_default_preset') {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implements hook_views_default_views().
+ */
+function jenerate_views_views_default_views() {
+  $views_path = drupal_get_path('module', 'jenerate_views') . '/views';
+  $files = file_scan_directory($views_path, '/\.inc$/');
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    if (isset($view)) {
+      $views[$view->name] = $view;
+    }
+  }
+
+  return $views;
+}
+
+/**
+ * Implements hook_views_default_views_alter().
+ *
+ * Provides overrides for default views provided by other modules.
+ */
+function jenerate_views_views_default_views_alter(&$views) {
+  $views_path = drupal_get_path('module', 'jenerate_views') . '/views';
+  $files = file_scan_directory($views_path, '/\.inc$/');
+
+  foreach ($files as $filename => $file) {
+    if (isset($views[$file->name])) {
+      require $filename;
+      $views[$file->name] = $view;
+    }
+  }
+}
+
+/**
+ * Implements hook_flexslider_default_presets().
+ */
+function jenerate_views_flexslider_default_presets() {
+  $sliders_path = drupal_get_path('module', 'jenerate_views') . '/sliders';
+  $files = file_scan_directory($sliders_path, '/\.inc$/');
+  $presets = array();
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    if (isset($preset)) {
+      $presets[$preset->name] = $preset;
+    }
+  }
+
+  return $presets;
+}
+
+
