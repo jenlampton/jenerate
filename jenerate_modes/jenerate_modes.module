@@ -1,0 +1,55 @@
+<?php
+/**
+ * @file
+ * Adds extra view modes for content display.
+ */
+
+/**
+ * Implements hook_entity_info().
+ *
+ * Provides custom view modes for nodes.
+ */
+function jenerate_modes_entity_info() {
+  $return['node']['view modes'] = array(
+    'widget' => array(
+      'label' => t('Widget'),
+      'custom settings' => TRUE,
+    ),
+  );
+
+  return $return;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function jenerate_modes_entity_info_alter(&$entity_info) {
+  if (module_exists('fieldable_panels_panes')) {
+    // New bundles!
+    $entity_info['fieldable_panels_pane']['bundles']['widget'] = array(
+      'label' => t('Standard Widget'),
+      'pane category' => t('Landing pages'),
+      'pane top level' => FALSE, // set to true to make this show as a top level icon
+      'admin' => array(
+        'path' => 'admin/structure/panels/entity/manage/%fieldable_panels_panes_type',
+        'bundle argument' => 5,
+        // Note that real path has all _ replaced with - from the bundle name.
+        'real path' => 'admin/structure/panels/entity/manage/widget',
+        'access arguments' => array('administer fieldable panels panes'),
+      ),
+    );
+
+    // New view modes!
+    $entity_info['fieldable_panels_pane']['view modes']['full']['label'] = t('Full width');
+
+    $entity_info['fieldable_panels_pane']['view modes']['half'] = array(
+      'label' => t('Half width'),
+      'custom settings' => TRUE,
+    );
+
+    $entity_info['fieldable_panels_pane']['view modes']['third'] = array(
+      'label' => t('Third width'),
+      'custom settings' => TRUE,
+    );
+  }
+}
