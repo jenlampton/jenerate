@@ -1,0 +1,10 @@
+name = Custom Feeds
+description = Feeds exports for the MTC site.
+core = 7.x
+package = Custom
+
+dependencies[] = feeds
+dependencies[] = feeds_ex
+dependencies[] = feeds_httpfetcher_append_headers
+dependencies[] = feeds_tamper
+dependencies[] = feeds_tamper_file_fetcher

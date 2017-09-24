@@ -1,0 +1,69 @@
+<?php
+/**
+ * @file
+ * Feeds exports.
+ */
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function jenerate_feeds_ctools_plugin_api($module, $api) {
+  if ($module == 'feeds' && $api == 'feeds_importer_default') {
+    return array('version' => 1);
+  }
+  if ($module == 'feeds_tamper' && $api == 'feeds_tamper_default') {
+    return array('version' => 2);
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function jenerate_feeds_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'feeds_tamper') {
+    return 'plugins';
+  }
+}
+
+/**
+ * Implements hook_feeds_importer_default().
+ */
+function jenerate_feeds_feeds_importer_default() {
+  $path = drupal_get_path('module', 'jenerate_feeds') . '/importers';
+  $files = file_scan_directory($path, '/\.inc$/');
+
+  $importers = array();
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    if (isset($feeds_importer)) {
+      $importers[$feeds_importer->id] = $feeds_importer;
+    }
+  }
+
+  return $importers;
+}
+
+/**
+ * Implements hook_feeds_tamper_default().
+ */
+function jenerate_feeds_feeds_tamper_default() {
+  $path = drupal_get_path('module', 'jenerate_feeds') . '/tampers';
+  $files = file_scan_directory($path, '/\.inc$/');
+
+  $all_feeds_tampers = array();
+
+  foreach ($files as $filepath => $file) {
+    require $filepath;
+    /*
+    if (isset($feeds_tamper)) {
+      $all_feeds_tampers[$feeds_tamper->id] = $feeds_tamper;
+    }
+    */
+    if (isset($feeds_tampers) && is_array($feeds_tampers)) {
+      $all_feeds_tampers = array_merge($all_feeds_tampers, $feeds_tampers);
+    }
+  }
+
+  return $all_feeds_tampers;
+}
