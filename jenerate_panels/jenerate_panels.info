@@ -1,5 +1,5 @@
 name = Custom Panels
-description = Panels pages and handlers exports.
+description = Configuration files to manage Panels exports (handlers, minis, and pages).
 core = 7.x
 package = Custom
 

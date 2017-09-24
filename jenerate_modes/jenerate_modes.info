@@ -1,4 +1,4 @@
 name = Custom View Modes
-description = Configuration files for entity view modes.
+description = Entity View Modes provided in code.
 core = 7.x
 package = Custom

@@ -1,5 +1,5 @@
 name = Custom Date Formats
-description = Adds extra date formats.
+description = Date formats provided in code.
 core = 7.x
 package = Custom
 
