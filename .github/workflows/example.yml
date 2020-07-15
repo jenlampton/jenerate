@@ -1,3 +1,6 @@
+# This is how to add a badge to the README file.
+#[](https://github.com/backdrop/backdrop-issues/workflows/Greetings/badge.svg)
+
 name: Greet Everyone
 # This workflow is triggered on pushes to the repository.
 on: [push]
